@@ -33,7 +33,6 @@ public class TempoChecker : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(keyToCheckInput) && !isParalysed) {
             GetComponent<Animator>().SetTrigger("testTrigger");
-            
             timeSincePress = 0;
             switch (currentState)
             {
