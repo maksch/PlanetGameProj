@@ -9,11 +9,15 @@ public class TempoChecker : MonoBehaviour {
     private bool isColliding;
     private bool isParalysed;
     private static float timeSincePress;
+    private int currentState;
+    AnimationClip clip;
+    Animation animation;
 	// Use this for initialization
 	void Start () {
         isParalysed = false;
         isColliding = false;
         timeSincePress = 0;
+        currentState = 3;
 
     }
 	void FixedUpdate()
@@ -28,27 +32,43 @@ public class TempoChecker : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(keyToCheckInput) && !isParalysed) {
+            GetComponent<Animator>().SetTrigger("testTrigger");
+            
             timeSincePress = 0;
-            if (isColliding)
+            switch (currentState)
             {
-                isParalysed = true;
-                inputResultText.text = "HIT " + keyToCheckInput;
-            }
-            else
-            {
-                inputResultText.text = "MISS " + keyToCheckInput;
+                case 0: inputResultText.text = "PERFECT " + keyToCheckInput; break;
+                case 1: inputResultText.text = "GOOD " + keyToCheckInput; break;
+                case 2: inputResultText.text = "BAD " + keyToCheckInput; break;
+                case 3: inputResultText.text = "MISS " + keyToCheckInput; break;
+                default: inputResultText.text = "ERROR " + keyToCheckInput; break;
             }
         }
-        
     }
 
     void OnTriggerEnter(Collider c)
     {
+        if(c.gameObject.tag == "PerfectHitbox")
+        {
+            currentState = 0;
+        }
+        else if (c.gameObject.tag == "GoodHitbox")
+        {
+            currentState = 1;
+        }
+        else if (c.gameObject.tag == "BadHitbox")
+        {
+            currentState = 2;
+        }
         isColliding = true;
     }
     void OnTriggerExit(Collider c)
     {
-        isColliding = false;
-        isParalysed = false;
+        if (c.gameObject.tag == "ExitHitbox")
+        {
+            isColliding = false;
+            isParalysed = false;
+            currentState = 3;
+        }
     }
 }
