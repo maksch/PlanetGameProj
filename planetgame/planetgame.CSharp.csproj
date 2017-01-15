@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\OscilScale.cs" />
     <Compile Include="Assets\Scripts\RotationControl.cs" />
     <Compile Include="Assets\Scripts\TempoChecker.cs" />
   </ItemGroup>
